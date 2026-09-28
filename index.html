@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DehydraMath - Food Dehydration Math That Holds Up</title>
+<meta name="description" content="Jerky yield and true cost per pound, fresh-to-dried conversions, herb ratios, drying windows by food, electricity cost and tray counts - honest numbers for the dehydrator.">
+<link rel="canonical" href="https://ilanis-agent.github.io/dehydramath/">
+<meta property="og:title" content="DehydraMath - Food Dehydration Math That Holds Up">
+<meta property="og:description" content="Jerky yield and true cost per pound, fresh-to-dried conversions, herb ratios, drying windows by food, electricity cost and tray counts - honest numbers for the dehydrator.">
+<meta property="og:url" content="https://ilanis-agent.github.io/dehydramath/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#8a4a12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%8D%8E%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#1f150c; --card:#2b1d10; --ink:#f7ecdc; --muted:#cbaa84;
+  --accent:#e89a3a; --accent2:#f2d14e; --line:#4d3822; --good:#8fd18a; --warn:#f2c14e; --bad:#e86a5a;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding:1rem}
+.wrap{max-width:760px;margin:0 auto}
+header{text-align:center;padding:1.6rem 0 1.2rem}
+h1{font-size:2.1rem;color:var(--accent2);letter-spacing:.5px}
+.tag{color:var(--muted);margin-top:.3rem;font-size:.98rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;margin:1rem 0}
+.card h2{font-size:1.05rem;color:var(--accent);margin-bottom:.7rem}
+.row{display:flex;flex-wrap:wrap;gap:.9rem;align-items:flex-end;margin:.5rem 0}
+.field{display:flex;flex-direction:column;gap:.25rem}
+label{font-size:.8rem;color:var(--muted)}
+input,select{background:#1b120a;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;font-size:1rem;width:8.5rem}
+input:focus,select:focus{outline:2px solid var(--accent)}
+button{background:var(--accent);color:#1f150c;border:0;border-radius:8px;padding:.5rem 1.1rem;font-size:.95rem;font-weight:700;cursor:pointer}
+button:hover{background:#f2ab5c}
+.presets{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0 .2rem}
+.presets button{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:400;padding:.35rem .8rem;font-size:.85rem}
+.presets button:hover{border-color:var(--accent);color:var(--ink)}
+.big{font-size:1.3rem;font-weight:700;color:var(--accent2)}
+.result{margin-top:.6rem;font-size:1rem;min-height:1.4rem}
+.result small{color:var(--muted);display:block;margin-top:.25rem}
+.verdict-ok{color:var(--good)} .verdict-tight{color:var(--warn)} .verdict-bad{color:var(--bad)}
+.era{font-size:.85rem;color:var(--muted);margin-bottom:.6rem;font-style:italic}
+footer{margin:2rem 0 1rem;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:1rem}
+footer code{color:var(--accent)}
+details{margin-top:.4rem} summary{cursor:pointer;color:var(--muted);font-size:.85rem}
+table{border-collapse:collapse;margin-top:.5rem;font-size:.9rem}
+td,th{border:1px solid var(--line);padding:.3rem .6rem;text-align:left}
+th{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>&#127822; DehydraMath</h1>
+<p class="tag">Food dehydration math that holds up. Yield, cost, timing - numbers you can plan a batch on.</p>
+</header>
+
+<section class="card" id="c-jerky">
+<h2>Jerky yield &amp; true cost</h2>
+<p class="era">Meat is mostly water. Three pounds of beef does not make three pounds of jerky - here is what it really makes and costs.</p>
+<div class="presets" id="presets-jerky"></div>
+<div class="row">
+  <div class="field"><label for="in-meat">fresh meat (lb)</label><input id="in-meat" type="number" min="0.5" step="0.5" value="3"></div>
+  <div class="field"><label for="in-mprice">meat price ($/lb)</label><input id="in-mprice" type="number" min="1" step="0.5" value="6"></div>
+</div>
+<button id="btn-jerky">Jerky math</button>
+<div class="result" id="out-jerky"></div>
+</section>
+
+<section class="card" id="c-convert">
+<h2>Fresh to dried</h2>
+<p class="era">General water-loss conversion for any produce, plus the 3:1 herb rule for recipes.</p>
+<div class="row">
+  <div class="field"><label for="in-fresh">fresh (lb)</label><input id="in-fresh" type="number" min="0.25" step="0.25" value="4"></div>
+  <div class="field"><label for="in-loss">water loss (%)</label><input id="in-loss" type="number" min="30" max="95" step="5" value="75"></div>
+  <div class="field"><label for="in-herb">fresh herbs (tbsp)</label><input id="in-herb" type="number" min="0.5" step="0.5" value="9"></div>
+</div>
+<button id="btn-convert">Convert</button>
+<div class="result" id="out-convert"></div>
+</section>
+
+<section class="card" id="c-window">
+<h2>Drying window</h2>
+<p class="era">Hours and temperature by food, with the doneness test that actually matters.</p>
+<div class="row">
+  <div class="field"><label for="in-food">food</label>
+    <select id="in-food">
+      <option value="jerky">Jerky</option>
+      <option value="apple">Apple slices</option>
+      <option value="banana">Banana</option>
+      <option value="herbs">Herbs</option>
+      <option value="tomatoes">Tomatoes</option>
+      <option value="mango">Mango</option>
+    </select>
+  </div>
+  <div class="field"><label for="in-pieces">pieces</label><input id="in-pieces" type="number" min="1" step="1" value="120"></div>
+  <div class="field"><label for="in-pertray">per tray</label><input id="in-pertray" type="number" min="1" step="1" value="30"></div>
+</div>
+<button id="btn-window">Window &amp; trays</button>
+<div class="result" id="out-window"></div>
+</section>
+
+<section class="card" id="c-elec">
+<h2>Electricity</h2>
+<p class="era">A dehydrator runs for hours. Here is what the batch actually costs in power.</p>
+<div class="row">
+  <div class="field"><label for="in-watts">dehydrator (W)</label><input id="in-watts" type="number" min="100" step="50" value="500"></div>
+  <div class="field"><label for="in-hours">hours</label><input id="in-hours" type="number" min="0.5" step="0.5" value="8"></div>
+  <div class="field"><label for="in-rate">rate ($/kWh)</label><input id="in-rate" type="number" min="0.05" step="0.01" value="0.15"></div>
+</div>
+<button id="btn-elec">Power math</button>
+<div class="result" id="out-elec"></div>
+</section>
+
+<section class="card" id="c-why">
+<h2>Why these numbers</h2>
+<details><summary>The assumptions, stated honestly</summary>
+<table>
+<tr><th>Constant</th><th>Value</th><th>Why</th></tr>
+<tr><td>Jerky yield</td><td>~35% of fresh weight</td><td>Lean meat is ~65% water; drying to a safe, chewy jerky takes it out</td></tr>
+<tr><td>Herb ratio</td><td>3 fresh : 1 dried</td><td>Drying concentrates flavor; recipes written for fresh need the conversion</td></tr>
+<tr><td>Jerky temp</td><td>160&deg;F</td><td>USDA guidance for meat safety - the pathogen step, not a suggestion</td></tr>
+<tr><td>Herb temp</td><td>95&deg;F</td><td>Heat above 100&deg;F drives off the aromatic oils you are keeping the herbs for</td></tr>
+<tr><td>Dehydrator draw</td><td>~500W typical</td><td>Box dehydrators with fans; check your label</td></tr>
+</table>
+<p style="margin-top:.5rem;color:var(--muted);font-size:.85rem">Humidity stretches every window. Condition dried food in a jar for a week before calling it shelf-stable.</p>
+</details>
+</section>
+
+<footer>
+<p><strong>DehydraMath</strong> - part of the App Factory collection. Honest small tools, one good idea at a time.</p>
+<p>Source: <code>engine.js</code> (pure functions, tested in CI) &middot; <code>app.html</code> (this UI) &middot; <code>README.md</code></p>
+</footer>
+</div>
+</body>
+</html>
